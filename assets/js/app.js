@@ -11,7 +11,15 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-import "phoenix_html"
+// import "phoenix_html"
+
+import Elm from './elm/main';
+
+const elmContainer = document.querySelector('#form_container');
+
+if (elmContainer) {
+  const app = Elm.Main.embed(elmContainer);
+}
 
 // Import local files
 //

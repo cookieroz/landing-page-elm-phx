@@ -1,0 +1,10 @@
+var _cookieroz$landing_page_elm_phx$Messages$SubscribeResponse = function (a) {
+	return {ctor: 'SubscribeResponse', _0: a};
+};
+var _cookieroz$landing_page_elm_phx$Messages$HandleFormSubmit = {ctor: 'HandleFormSubmit'};
+var _cookieroz$landing_page_elm_phx$Messages$HandleEmailInput = function (a) {
+	return {ctor: 'HandleEmailInput', _0: a};
+};
+var _cookieroz$landing_page_elm_phx$Messages$HandleFullNameInput = function (a) {
+	return {ctor: 'HandleFullNameInput', _0: a};
+};
