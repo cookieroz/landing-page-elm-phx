@@ -1,3 +1,7 @@
+alias LandingPage.Clients.GoogleRecaptchaHttp
+
+@google_recaptcha_client Application.get_env(:landing_page, :google_recaptcha)[:client]
+
 defmodule LandingPage.Marketing do
   @moduledoc """
   The Marketing context.
@@ -100,5 +104,24 @@ defmodule LandingPage.Marketing do
   """
   def change_lead(%Lead{} = lead) do
     Lead.changeset(lead, %{})
+  end
+
+  def subscribe(lead_params) do
+    token = Map.get(lead_params, "recaptcha_token")
+
+    with %Ecto.Changeset{valid?: true} = changeset <- Lead.changeset(%Lead{}, lead_params),
+         {:ok, %{success: true}} <- @google_recaptcha_client.verify(token),
+         {:ok, lead} <- Repo.insert(changeset) do
+      {:ok, lead}
+    else
+      {:ok, %{success: false}} ->
+        {:error, :invalid_recaptcha_token}
+
+      {:error, response} ->
+        {:error, response}
+
+      other ->
+        {:error, other}
+    end
   end
 end

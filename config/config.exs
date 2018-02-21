@@ -22,6 +22,12 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :landing_page,
+  google_recaptcha: [
+    secret_key: "6LfOuEcUAAAAAP99V2j_vq3-Qo0Xvkd4XrjmgKjn",
+    client: LandingPage.Clients.GoogleRecaptchaHttp
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

@@ -6,6 +6,7 @@ import Dict exposing (Dict)
 type alias FormFields =
     { fullName : String
     , email : String
+    , recaptchaToken : Maybe String
     }
 
 
@@ -48,6 +49,7 @@ emptyFormFields : FormFields
 emptyFormFields =
     { fullName = ""
     , email = ""
+    , recaptchaToken = Nothing
     }
 
 
@@ -69,3 +71,7 @@ emptyValidationErrors =
 initialModel : Model
 initialModel =
     { subscribeForm = Editing emptyFormFields }
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Ports.setRecaptchaToken SetRecaptchaToken

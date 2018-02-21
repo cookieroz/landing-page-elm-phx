@@ -11,6 +11,10 @@ defmodule LandingPageWeb.ErrorView do
     "Internal server error"
   end
 
+  def render("invalid_recaptcha_token.json", _) do
+    %{recaptcha_token: ["the response is invalid"]}
+  end
+
   def render("error.json", %{changeset: changeset}) do
     Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
   end

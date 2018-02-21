@@ -7,7 +7,7 @@ var _cookieroz$landing_page_elm_phx$Model$extractValidationErrors = function (su
 		return _cookieroz$landing_page_elm_phx$Model$emptyValidationErrors;
 	}
 };
-var _cookieroz$landing_page_elm_phx$Model$emptyFormFields = {fullName: '', email: ''};
+var _cookieroz$landing_page_elm_phx$Model$emptyFormFields = {fullName: '', email: '', recaptchaToken: _elm_lang$core$Maybe$Nothing};
 var _cookieroz$landing_page_elm_phx$Model$extractFormFields = function (subscribeForm) {
 	var _p1 = subscribeForm;
 	switch (_p1.ctor) {
@@ -23,9 +23,9 @@ var _cookieroz$landing_page_elm_phx$Model$extractFormFields = function (subscrib
 			return _cookieroz$landing_page_elm_phx$Model$emptyFormFields;
 	}
 };
-var _cookieroz$landing_page_elm_phx$Model$FormFields = F2(
-	function (a, b) {
-		return {fullName: a, email: b};
+var _cookieroz$landing_page_elm_phx$Model$FormFields = F3(
+	function (a, b, c) {
+		return {fullName: a, email: b, recaptchaToken: c};
 	});
 var _cookieroz$landing_page_elm_phx$Model$Model = function (a) {
 	return {subscribeForm: a};

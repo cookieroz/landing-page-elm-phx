@@ -38,7 +38,7 @@ formView subscribeForm =
           validationErrors =
               extractValidationErrors subscribeForm
     let
-        { fullName, email } =
+        { fullName, email, recaptchaToken } =
             extractFormFields subscribeForm
 
         saving =
@@ -58,7 +58,17 @@ formView subscribeForm =
                     False
 
         buttonDisabled =
-            fullName == "" || email == "" || saving || invalid
+            fullName
+                == ""
+                || email
+                == ""
+                || recaptchaToken
+                == Nothing
+                || recaptchaToken
+                == Just ""
+                || saving
+                || invalid
+                
     in
         Html.div
             [ Html.class "content" ]
@@ -92,6 +102,12 @@ formView subscribeForm =
                 , Html.div
                     [ Html.class "field" ]
                     [ Html.div
+                            [ Html.id "recaptcha" ]
+                            []
+                    , validationErrorView "recaptcha_token" validationErrors
+                    ]
+                    [ Html.class "field" ]
+                    [ Html.div
                         [ Html.class "control" ]
                         [ Html.input
                             [ Html.classList
@@ -109,42 +125,42 @@ formView subscribeForm =
                 , Html.div
                     [ Html.class "field" ]
                     [ Html.div
-                        [ Html.class "control" ]
-                        [ Html.input
-                                [ Html.classList
-                                    [ ( "input is-medium", True )
-                                    , ( "is-danger", Dict.member "email" validationErrors )
-                                    ]
-                                , Html.type_ "email"
-                                , Html.placeholder "My email address is..."
-                                , Html.required True
-                                , Html.value email
-                                , Html.onInput HandleEmailInput
-                                ]
-                                []
-                            , validationErrorView "email" validationErrors
-                            ]
+                      [ Html.class "control" ]
+                      [ Html.input
+                        [ Html.classList
+                          [ ( "input is-medium", True )
+                          , ( "is-danger", Dict.member "email" validationErrors )
+                          ]
+                        , Html.type_ "email"
+                        , Html.placeholder "My email address is..."
+                        , Html.required True
+                        , Html.value email
+                        , Html.onInput HandleEmailInput
+                        ]
+                        []
+                      , validationErrorView "email" validationErrors
+                      ]
                       ]
 
-                        [ Html.button
-                            [ Html.class "button is-primary is-medium"
-                            , Html.disabled buttonDisabled
-                            ]
-                            [ Html.span
-                                [ Html.class "icon" ]
-                                [ Html.i
-                                    [ Html.classList
-                                        [ ( "fa fa-check", not saving )
-                                        , ( "fa fa-circle-o-notch fa-spin", saving )
-                                        ]
-                                    ]
-                                    []
-                                ]
-                            , Html.span
-                                []
-                                [ Html.text "Subscribe me" ]
-                            ]
+                      [ Html.button
+                        [ Html.class "button is-primary is-medium"
+                        , Html.disabled buttonDisabled
                         ]
+                        [ Html.span
+                          [ Html.class "icon" ]
+                          [ Html.i
+                            [ Html.classList
+                              [ ( "fa fa-check", not saving )
+                              , ( "fa fa-circle-o-notch fa-spin", saving )
+                              ]
+                            ]
+                          []
+                          ]
+                        , Html.span
+                          []
+                          [ Html.text "Subscribe me" ]
+                        ]
+                      ]
                     ]
                 ]
             ]
@@ -152,23 +168,23 @@ formView subscribeForm =
 
 formError : SubscribeForm -> Html Msg
 formError subscribeForm =
-    case subscribeForm of
-        Errored _ message ->
-            Html.div
-                [ Html.class "notification is-danger fade-in" ]
-                [ Html.text message ]
+  case subscribeForm of
+    Errored _ message ->
+      Html.div
+        [ Html.class "notification is-danger fade-in" ]
+        [ Html.text message ]
 
-        _ ->
-            Html.text ""
+      _ ->
+        Html.text ""
 
 validationErrorView : String -> ValidationErrors -> Html Msg
 validationErrorView key validationErrors =
-    case Dict.get key validationErrors of
-        Just error ->
-            error
-                |> List.map Html.text
-                |> Html.p
-                    [ Html.class "help is-danger" ]
+  case Dict.get key validationErrors of
+    Just error ->
+      error
+        |> List.map Html.text
+        |> Html.p
+            [ Html.class "help is-danger" ]
 
-        Nothing ->
-            Html.text ""
+    Nothing ->
+      Html.text ""

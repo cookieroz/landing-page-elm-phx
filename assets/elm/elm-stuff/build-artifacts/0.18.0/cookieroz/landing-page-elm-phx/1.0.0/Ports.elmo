@@ -1,0 +1,6 @@
+var _cookieroz$landing_page_elm_phx$Ports$initRecaptcha = _elm_lang$core$Native_Platform.outgoingPort(
+	'initRecaptcha',
+	function (v) {
+		return v;
+	});
+var _cookieroz$landing_page_elm_phx$Ports$setRecaptchaToken = _elm_lang$core$Native_Platform.incomingPort('setRecaptchaToken', _elm_lang$core$Json_Decode$string);

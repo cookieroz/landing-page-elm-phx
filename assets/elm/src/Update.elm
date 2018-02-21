@@ -29,10 +29,13 @@ update msg model =
             SubscribeResponse (Err (BadStatus response)) ->
                 case Decode.decodeString validationErrorsDecoder response.body of
                     Ok validationErrors ->
-                        { model | subscribeForm = Invalid formFields validationErrors } ! []
+                        { model | subscribeForm = Invalid { formFields | recaptchaToken = Nothing } validationErrors } ! [ Ports.resetRecaptcha () ]
 
                     Err error ->
-                        { model | subscribeForm = Errored formFields "Oops! Something went wrong!" } ! []
+                        { model | subscribeForm = Errored { formFields | recaptchaToken = Nothing } "Oops! Something went wrong!" } ! [ Ports.resetRecaptcha () ]
 
             SubscribeResponse (Err error) ->
-                { model | subscribeForm = Errored formFields "Oops! Something went wrong!" } ! []
+                { model | subscribeForm = Errored { formFields | recaptchaToken = Nothing } "Oops! Something went wrong!" } ! [ Ports.resetRecaptcha () ]
+
+            SetRecaptchaToken token ->
+                { model | subscribeForm = Editing { formFields | recaptchaToken = Just token } } ! []
